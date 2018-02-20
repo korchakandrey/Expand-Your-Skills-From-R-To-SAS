@@ -1,17 +1,18 @@
-libname mylib "/folders/myfolders/conf";
-filename csv_srs "/folders/myfolders/conf/mental-heath-in-tech-2016_20161114.csv";
+libname mylib "/folders/myfolders/conf/Library";
+filename csv_srs "/folders/myfolders/conf/Library/mental-heath-in-tech-2016_20161114.csv";
 
 proc import datafile = csv_srs
 	             out = ds_source
 	            dbms = csv replace ;
-	guessingrows = 32767 ;
+	guessingrows = MAX ;
 	getnames = no  ;
+	
 run;
 
 /* create code to add first line text as labels to variables */
 filename code temp;
 data  _null_ ;
-  length label $200. ;
+  *length label $1000. ;
   file code;
   infile csv_srs obs=1 ;
   input;
@@ -52,20 +53,22 @@ proc print data=work.ds_source(obs = 10 firstobs=2 ) label ;
 run;
 title;
 
-/*
+
 * Selecting Demographic data;
-data demog;
-	set ds_source;
-	
-   age                            = 
-   gender                         =                                                                                                                                  
-   country_live
-   US_state_or_territory_do_yo            =                                                                                                                         
-   What_country_do_you_work_in                 =                                                                                                                                 
-   What_US_state_or_territory_do_you_work_in   =
-   Which_of_the_following_best_desc            =                                                                                                        
-   Do_you_work_remotely                        =     
-	
-   keep  ;
+data mylib.demog;
+   set ds_source(
+   rename = (
+   VAR56 = AGE       
+   VAR57 = GENDER    
+   VAR58 = COUNTRY   
+   VAR59 = US_STATE  
+   VAR60 = W_COUNTRY 
+   VAR61 = W_US_STATE
+   VAR62 = POSITION   
+   VAR63 = REMOTELY )) ;
+   
+   *** Remove first row with labels ***;
+   if _N_ = 1 then delete;
+    
+   keep  AGE GENDER COUNTRY US_STATE W_COUNTRY W_US_STATE POSITION REMOTELY ;
 run;
-*/
