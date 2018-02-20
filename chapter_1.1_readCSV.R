@@ -1,8 +1,11 @@
 getwd()
-setwd("C:/Users/Андрей/Desktop")
-csv_file<-read.csv2("mental-heath-in-tech-2016.csv", stringsAsFactors = FALSE)
+setwd("E:/R/mental-health-in-tech-2016")
+
+csv_file<-read.csv("mental-heath-in-tech-2016_20161114.csv", stringsAsFactors = FALSE)
 dim(csv_file)
+str(csv_file)
 names(csv_file)
+names(csv_file[,56:63])
 ### Let`s start with demographic data:
 # [56] "What.is.your.age."                                                                                                                                                               
 # [57] "What.is.your.gender."                                                                                                                                                            
@@ -22,7 +25,7 @@ head(demog)
 table(demog$"What.is.your.age.")
 hist(demog$"What.is.your.age.")
 
-names(demog)<-c("AGE","GENDER","COUNTRY","US_STATE","W_COUNTRY","POSITION","REMOTELY")
+names(demog)<-c("AGE","GENDER","COUNTRY","US_STATE","W_COUNTRY","W_US_STATE","POSITION","REMOTELY")
 str(demog)
 summary(demog$"AGE")
 summary(demog$"GENDER")
