@@ -28,8 +28,8 @@ data  _null_ ;
     end;
     label = TRANWRD(label,'"','');
 
-	j+1;
     put 'var' j " label='" label +(-1) "'";
+	j+1;
    end; 
 run;
 
@@ -46,23 +46,26 @@ title 'List Variable Attributes';
 proc contents data=work.ds_source;
 quit;
 
-
 title 'Print Variables using Labels as Headers';
 proc print data=work.ds_source(obs = 10 firstobs=2 ) label ;
  * var var1-var3;
 run;
 title;
 
-
+/*
 * Selecting Demographic data;
 data demog;
 	set ds_source;
-	keep    What_is_your_age
-			What_is_your_gender                                                                                                                                                          
-			What_country_do_you_live_in                                                                                                                                                 
-			What_US_state_or_territory_do_yo                                                                                                                                     
-			What_country_do_you_work_in                                                                                                                                                  
-			What_US_state_or_territory_do_you_work_in
-			Which_of_the_following_best_desc                                                                                                                   
-			Do_you_work_remotely;
+	
+   age                            = 
+   gender                         =                                                                                                                                  
+   country_live
+   US_state_or_territory_do_yo            =                                                                                                                         
+   What_country_do_you_work_in                 =                                                                                                                                 
+   What_US_state_or_territory_do_you_work_in   =
+   Which_of_the_following_best_desc            =                                                                                                        
+   Do_you_work_remotely                        =     
+	
+   keep  ;
 run;
+*/
