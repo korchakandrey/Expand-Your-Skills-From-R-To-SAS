@@ -142,3 +142,21 @@ df2_lag_lead <- df2 %>%
 df2_lag_lead
 # Note that lag() and lead() are working within groups;
                                                       
+
+## Joins;
+# Information about subjects;
+df_add_info <- read.table(header = TRUE,
+                stringsAsFactors = FALSE,
+                text = "
+SUBJID  NAME 
+S1 Nick
+S2 Cate 
+S3 Josh 
+");
+df_add_info
+
+df_test_name <- df2_s %>%
+  left_join(y = df_add_info,
+           by = c("SUBJID" = "SUBJID")) %>%
+    select(NAME, TEST_MEAN )
+df_test_name
