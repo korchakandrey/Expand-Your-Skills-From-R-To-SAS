@@ -83,3 +83,28 @@ data ;
 run;
 title "Lag in SAS, Data from &syslast.";
 proc print;
+
+**** Creating Another dataset ***;
+data df_add_info ;
+	input SUBJID $  NAME $;
+	datalines;
+S1 Nick
+S2 Cate 
+S3 Josh 
+;
+run;
+title  "Creating Dataset with";
+title2 " Names, Data from &syslast.";
+proc print;
+
+data df_test_name ;
+	merge df2        ( in = in_x )
+	      df_add_info( in = in_y );
+	by SUBJID ;
+	* inner join;
+	if in_x and in_y ;
+	keep TEST NAME ;
+run;
+title  "Combined Data Set,";
+title1 "Data from &syslast.";
+proc print;
