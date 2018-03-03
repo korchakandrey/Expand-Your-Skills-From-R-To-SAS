@@ -1,0 +1,96 @@
+## Table 1 - reading text data in.
+df1<-read.table(header=TRUE,stringsAsFactors = FALSE,
+text ="
+  col1 col2 col3 
+                1 a T
+                2 b T
+                3 c F"
+)
+str(df1)
+#'data.frame':	3 obs. of  3 variables:
+#  $ col1: int  1 2 3
+#$ col2: Factor w/ 3 levels "a","b","c": 1 2 3
+#$ col3: logi  TRUE TRUE FALSE
+df1
+
+
+## Table 2 reading data from CSV file
+setwd("E:/R/mental-health-in-tech-2016");
+PATH <-  "mental-heath-in-tech-2016_20161114.csv"
+csv_file<-read.csv(PATH, stringsAsFactors = FALSE)
+# Checking number of Rows and Coulumns
+dim(csv_file)
+# Reading names of First 3 columns
+names(csv_file)[1:3]
+
+
+### DPLYR package
+# installing package
+install.packages("dplyr") 
+library("dplyr")
+help("dplyr")
+
+#Pipe operator
+# variable # 56 is Age
+names(csv_file)[56]
+sort(unique(csv_file[,56]))
+
+#The same task can be accomplished by Pipe Operator:
+csv_file[,56] %>% unique %>% sort
+
+# Using Dot with Pipe Operator
+1 %>% rep(2)
+1 %>% rep(2,.)
+
+
+###  Example 2.2.1 ***;
+
+df_k <- df1 %>% select( c("col1","col2"))
+df_k
+
+df_d <- df1 %>% select( -col3 )
+df_d
+#col1 col2
+#1    1    a
+#2    2    b
+#3    3    c
+
+#*** keeping all columns between col1 and col3 ***;
+#keep col1-col3;
+df1_k_betw <- df1 %>% select(num_range("col", 1:3))
+df1_k_betw
+
+# variables starts with ;
+df1_k_st <- df1 %>% select(starts_with("col"))
+df1_k_st
+
+# variables rename ;
+df1_rename <- df1 %>%
+   rename("Column1" = col1 )
+df1_rename
+
+
+### 2.3 ###
+df1_i <- df1 %>% filter(col3==1, col2 == "a")
+df1_i
+#  col1 col2 col3
+#1    1    a TRUE
+#2    2    b TRUE
+
+##R base syntax – subset function
+df_i <- subset( df1, col3 == 1)
+df_i
+#  col1 col2 col3
+#1    1    a TRUE
+#2    2    b TRUE
+
+### Creating new Variables by mutate()
+# Block 3 mutate() function and creating new varbles ;
+df1
+df_new_var <- df1 %>% mutate(  
+  n_2 = n()/2,
+  col4 = if_else(row_number() >= n()/2
+                 ,">= n/2","<n/2","missing"),
+  col1 = col1 + 0.03
+)
+df_new_var
