@@ -94,3 +94,62 @@ df_new_var <- df1 %>% mutate(
   col1 = col1 + 0.03
 )
 df_new_var
+
+## Set & Merge & Join
+
+# Grouping varibles and statistics in R;
+df2 <- read.table(header = TRUE,
+                  stringsAsFactors = FALSE,
+                  text = "
+                  SUBJID TEST1 TEST2 PERIOD
+                  S1 10 NA 1	
+                  S1 8  7 2	
+                  S2 7 4 1	
+                  S2 5 3 2	
+                  ") %>%
+  mutate( TEST = rowMeans(.[,c("TEST1","TEST2")],na.rm=TRUE ) ) 
+df2
+
+df2_s <- df2 %>%
+  group_by( SUBJID ) %>%
+  summarise(
+    TEST_N    = n( ),
+    TEST_MEAN = mean( TEST ,na.rm = TRUE),
+    TEST_SDT  = sd ( TEST ,na.rm = TRUE),
+    TEST_MIN  = min( TEST ,na.rm = TRUE),
+    TEST_MAX  = max( TEST ,na.rm = TRUE)
+  )     %>% ungroup() %>%  
+  mutate( TOT_TEST_MEAN = mean( TEST_MEAN ) )
+df2_s
+df2_s %>% as.data.frame
+
+
+# lag and lead functions;
+df2_lag_lead <- df2 %>% 
+  select(SUBJID, TEST1) %>% 
+  group_by( SUBJID) %>%
+  mutate( 
+    LAG = lag( TEST1 ),
+    LEAD = lead( TEST1 )
+  )
+df2_lag_lead
+# Note that lag() and lead() are working within groups;
+
+
+## Joins;
+# Information about subjects;
+df_add_info <- read.table(header = TRUE,
+                          stringsAsFactors = FALSE,
+                          text = "
+                          SUBJID  NAME 
+                          S1 Nick
+                          S2 Cate 
+                          S3 Josh 
+                          ");
+df_add_info
+
+df_test_name <- df2 %>%
+  inner_join(y = df_add_info,
+            by = c("SUBJID" = "SUBJID")) %>%
+  select(NAME, TEST )
+df_test_name
