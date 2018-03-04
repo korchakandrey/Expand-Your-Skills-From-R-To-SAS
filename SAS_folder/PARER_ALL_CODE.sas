@@ -7,7 +7,7 @@ data df1;
 2 b 1
 3 c 0
 ;
-run;
+run;a
 title "Data from &syslast.";
 proc print data=df1;
 run;
@@ -159,7 +159,7 @@ title "Data from &syslast.";
 proc print;
 run;
 
-
+*** 2.5 By Groupping ***;
 ********* Grouping Variables ***;
 data df2;
 	input SUBJID $ TEST1 TEST2 PERIOD ;
@@ -174,6 +174,7 @@ S2 5 3 2
 run;
 title "Data from &syslast.";
 proc print;
+run;
 
 proc means data = df2;
 	var TEST;
@@ -182,7 +183,7 @@ run;
 
 
 **** LAG function *******************;
-data ;
+data df2_lag;
 	set df2 ( keep = SUBJID TEST1);
 	by SUBJID;
 	
